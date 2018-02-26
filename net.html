@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Network Graph</title>
+	
+    <meta charset='utf-8'>
+	<script type="text/javascript" src="javascripts/jquery.min.js"></script> <!-- (DON"T MODIFY) Local jQuery -->
+	<script type="text/javascript" src="javascripts/cytoscape.min.js"></script> <!-- (DON"T MODIFY) cytoscape library -->
+    <script type="text/javascript" src="javascripts/net.js"></script> <!-- (Please modify) Our own javascript  -->
+    <link rel="stylesheet"  href="stylesheets/net.css">
+  </head>
+  
+  <body>
+
+<!-- The Modal: This is the initial dialog box that prompts the user for files to create the graph. 
+	Acceptable functionality so far. Not much work needed here.  -->
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id ="modal_title">Program Mode</h2>
+    </div>
+    <div class="modal-body">
+    	<p id="modal_details">
+    		Choose whether to load your own graph or load a sample graph to test this program.
+    	</p>
+		<input type="button" id="manual_entry" class="modal_button" value="Manual Entry" onclick="manualEntryGraph()">
+		<input type="button" id="auto_entry" class="modal_button" value="Load Sample Graph" onclick="loadDefaultGraph()">
+
+
+		<label id="label_nodesFile" for="nodesFile" class="modal_button" style="display:none">
+			Browse Nodes File
+		</label>		 
+		<input type="file" id='nodesFile'  onchange='loadNodesFile(this)' />
+		
+
+		<label id="label_edgesFile" for="edgesFile" class="modal_button" style="display:none">
+			Browse Edges File
+		</label>
+		<input type="file" id='edgesFile' onchange='loadEdgesFile(this)'/>
+		<br>
+
+		
+    </div>
+  </div>
+
+
+<!-- Sidebar: Where information about nodes/edges is shown/modified. This needs a lot of work on the javascript part -->
+</div>
+	<div id="mySidenav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<div id="notification_area" class="entry">
+		</div>
+
+		<div id="args_section">
+		   Value : <input type="text" id="arg_a" class="args"  value="4" oninput="updateNode()">
+		   <!--br>
+		   b : <input type="text" id="arg_b" class="args"  value="5" oninput="#"><br>
+		   c : <input type="text" id="arg_c" class="args"  value="2" oninput="#">
+		   -->
+		</div>	
+
+		<div class="entry" >
+			<p>
+				To close this sidebar, just click on the &times; on the upper right corner and get back graphing space.  
+			</p>
+			<p>
+				This is where the values of the arguments will be changed. Currently only the name/label of a node (or edge) can be changed. To do so, a node (or an edge) must be selected/clicked before editing the 'value' field in this sidebar.
+			</p>
+			<p>
+				Remember that you can zoom in the graph by scrolling DOWN with two fingers (on your touchpad) and zoom out by scrolling UP with two fingers. You can also move the graph around by clicking on any area around the graph that is not an edge or a node and dragging the graph around. 
+
+			</p>
+			<p>
+				Side Note: This sidebar is scrollable, which means that it can hold as much content as it needs to.
+			</p>
+
+		</div>
+	</div>
+
+<!-- Graphing Space for the network graph. No need to modify this part. -->
+	<div id="container">
+		<span style="font-size:30px;cursor:pointer" onclick="openNav()"></span>		
+		<div id="cy">
+		</div>
+	</div>
+
+  </body>
+</html>
