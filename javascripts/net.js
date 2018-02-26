@@ -138,12 +138,11 @@ function changeModalDetails(newDetails){
           window.cy = this;
 
 /*        NODES/EDGES LISTENERS STUFF           */
+		// Node Listener for Hovering
         window.cy.on('mouseover', 'node', function (evt) { //cilck, tap, mouseover
             var node_x = (evt.target.position().x).toFixed(1);
             var node_y = (evt.target.position().y).toFixed(1);
-            document.getElementById("notification_area").innerHTML = "<strong>NODE: </strong>"+evt.target.id()+"<br><strong>Name: </strong>"+evt.target.data('name')+"<br> Position: "+node_x+", "+node_y; // also: this.data('name')
-            //var nodes = cy.filter("node[id !="+str(evt.target.id())+"]").select()
-            
+            document.getElementById("notification_area").innerHTML = "<strong>NODE: </strong>"+evt.target.id()+"<br><strong>Name: </strong>"+evt.target.data('name')+"<br> Position: "+node_x+", "+node_y; // also: this.data('name')            
             // Only one node can be hovered at at the same time
             cy.nodes().forEach(function( ele ){
               ele.removeClass('hovered');
@@ -153,9 +152,8 @@ function changeModalDetails(newDetails){
               ele.unselect();
             });
             cy.$('#'+evt.target.id()).addClass('hovered');
-            //cy.$('#'+evt.target.id()).style( "font-size", "18px");
         });   
-        // When a node is clicked it can not be hovered at the sametime
+        // Node Listener for clicking/tapping
         window.cy.on('tap', 'node', function (evt) { //cilck, tap, mouseover
             openNav();
             document.getElementById("arg_a").value = evt.target.data('name');
@@ -163,14 +161,16 @@ function changeModalDetails(newDetails){
             var node_x = Number((evt.target.position().x).toFixed(1))+100;
             var node_y = Number((evt.target.position().y).toFixed(1))+100;
             var node_id = evt.target.id()+"c";
-            document.getElementById("notification_area").innerHTML = "<strong>NODE: </strong>"+evt.target.id()+"<br><strong>Name: </strong>"+evt.target.data('name')+"<br> Position: "+node_x+", "+node_y; // also: this.data('name')
+            document.getElementById("notification_area").innerHTML = "<strong>NODE: </strong>"+evt.target.id()+"<br><strong>Name: </strong>"+evt.target.data('name')+"<br><strong> Position:</strong> "+node_x+", "+node_y; // also: this.data('name')
             
         }); 
 
+        // Edge Listener for tapping/clicking 
+        // Do not add a hovering listener for edges; IT RUINS INTERACTION 
         window.cy.on('tap', 'edge', function (evt) {
             openNav();
             document.getElementById("arg_a").value = evt.target.data('strength');
-            document.getElementById("notification_area").innerHTML = "<strong>EDGE: </strong>"+evt.target.id()+"<br><strong>Label: </strong>"+evt.target.data('label')+"<br> strength: "+evt.target.data('strength'); //Name: </strong>"+evt.target.data('name');
+            document.getElementById("notification_area").innerHTML = "<strong>EDGE: </strong>"+evt.target.id()+"<br><strong>Label: </strong>"+evt.target.data('label')+"<br> <strong>strength:</strong> "+evt.target.data('strength'); //Name: </strong>"+evt.target.data('name');
             //console.log(evt.target.id());
             cy.nodes().forEach(function( ele ){
               ele.removeClass('hovered');
@@ -181,6 +181,8 @@ function changeModalDetails(newDetails){
       });
     }
 
+
+    // Hardcoded sample graph :/
     function loadDefaultGraph(){
         closeModal();    
         window.cy.add([
@@ -232,6 +234,7 @@ function changeModalDetails(newDetails){
           ]);
         document.getElementById("cy").style.top = "0";
     }
+
 
     function manualEntryGraph(){
         document.getElementById("auto_entry").style.display = "none";
@@ -314,15 +317,19 @@ function changeModalDetails(newDetails){
     					
 
     					console.log("NODE CREATED: "+e_id);
-
   					 }
-            }
+            	}	
         	}
         document.getElementById("cy").style.top = "0";
         closeModal();
         }
 
-    function updateNode(){
+    // This function captures user input from the input field on the sidebar (as it is being typed)
+    // and updates the value of the selected element (node/edge) with the new value
+	// The next step is to really undestand the computation part of the program to display different fields when a node or an edge is selected
+	// and either add a listener for all those fields or a listener for each one of those fields. 
+	// 
+    function updateElement(){
         let newVal = document.getElementById("arg_a").value;
         cy.elements().forEach(function( ele ){
             if(ele.selected()){
